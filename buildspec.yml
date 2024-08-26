@@ -22,8 +22,8 @@ jobs:
 
       - name: Build and Push Docker Image
         env:
-          AWS_REGION: us-east-1
-          IMAGE_REPO_NAME: your-ecr-repo-name
+          AWS_REGION: ap-southeast-2
+          IMAGE_REPO_NAME: onlineshop
           IMAGE_TAG: latest
           ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
         run: |
