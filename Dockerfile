@@ -1,22 +1,16 @@
-# Use the official .NET Core SDK as a build environment
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+FROM --platform=linux/amd64 node:16
+
+#create app directory
 WORKDIR /app
 
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
+# install dependencies 
+# A Wildcard to make sure that we will copy both package.json and package-lock.json
+COPY package*.json /app/
 
-# Copy everything else and build the app
-COPY . ./
-RUN dotnet publish -c Release -o out
+RUN npm install
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
-WORKDIR /app
-COPY --from=build-env /app/out .
+# Bundle app source
+COPY . . 
 
-# Expose the port on which the app will listen
-EXPOSE 80
-
-# Command to run the application
-ENTRYPOINT ["dotnet", "YourAppName.dll"]
+EXPOSE 8080
+CMD ["npm", "start"]
